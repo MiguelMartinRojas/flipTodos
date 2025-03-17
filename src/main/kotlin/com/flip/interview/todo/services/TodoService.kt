@@ -12,6 +12,7 @@ class TodoService(
 ) {
 
     fun getAllTodos(): List<TodoDto> = todoMapper.toDtoList(todoRepository.findAll())
+    fun getTodosByCategory(category: String): List<TodoDto> = todoMapper.toDtoList(todoRepository.findByCategory(category))
     fun getTodoById(id: Long): TodoDto = todoRepository.findById(id)
         .orElseThrow { RuntimeException("Todo not found with ID: $id") }.let {
             todoMapper.toDto(it)

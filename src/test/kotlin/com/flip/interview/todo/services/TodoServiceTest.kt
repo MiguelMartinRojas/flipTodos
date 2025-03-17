@@ -6,6 +6,7 @@ import com.flip.interview.todo.models.TodoDto
 import com.flip.interview.todo.repositories.TodoRepository
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
@@ -132,5 +133,31 @@ class TodoServiceTest {
         verify(todoMapper, times(1)).toDtoList(updatedTodos)
         verify(todoRepository, times(1)).findAllById(ids)
         verify(todoRepository, times(1)).saveAll(updatedTodos)
+    }
+
+    @Test
+    fun `getTodosByCategory should return todos filtered by category`() {
+        // Given
+        val category1 = "Work"
+        val category2 = "School"
+        val todos = listOf(
+            Todo(1, "Work Todo 1", category1, "Description 1", false),
+            Todo(2, "Work Todo 2", category1, "Description 2", true),
+            Todo(2, "Work Todo 3", category2, "Description 3", true)
+        )
+        val todosResult = todos.filter { it.category == category1 }
+        val todoDtos = todosResult.map { TodoDto(it.id, it.title, it.category, it.description, it.done) }
+
+        `when`(todoRepository.findByCategory(category1)).thenReturn(todosResult)
+        `when`(todoMapper.toDtoList(todosResult)).thenReturn(todoDtos)
+
+        // When
+        val result = todoService.getTodosByCategory(category1)
+
+        // Then
+        assertEquals(2, result.size)
+        assertTrue(result.all { it.category == category1 })
+        verify(todoRepository, times(1)).findByCategory(category1)
+        verify(todoMapper, times(1)).toDtoList(todosResult)
     }
 }

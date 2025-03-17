@@ -8,10 +8,15 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v1/todos")
-class TodoController(private val todoService: TodoService){
+class TodoController(private val todoService: TodoService) {
 
     @GetMapping
-    fun getAllTodos(): List<TodoDto> = todoService.getAllTodos()
+    fun getAllTodos(@RequestParam category: String?): List<TodoDto> {
+        if (category != null) {
+            return todoService.getTodosByCategory(category)
+        }
+        return todoService.getAllTodos()
+    }
 
     @GetMapping("/{id}")
     fun getTodoById(@PathVariable id: Long): ResponseEntity<TodoDto> =
