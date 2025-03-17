@@ -3,7 +3,6 @@ plugins {
 	id 'org.jetbrains.kotlin.plugin.spring' version '1.9.25'
 	id 'org.springframework.boot' version '3.4.3'
 	id 'io.spring.dependency-management' version '1.1.7'
-	id 'org.springframework.cloud.contract' version '4.2.0'
 	id 'org.jetbrains.kotlin.plugin.jpa' version '1.9.25'
 }
 
@@ -12,7 +11,7 @@ version = '0.0.1-SNAPSHOT'
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(22)
+		languageVersion = JavaLanguageVersion.of(21)
 	}
 }
 
@@ -31,8 +30,10 @@ dependencies {
 	implementation 'org.jetbrains.kotlin:kotlin-reflect'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.jetbrains.kotlin:kotlin-test-junit5'
-	testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
+    testImplementation("org.mockito:mockito-core:4.8.0")
+    testImplementation("org.mockito:mockito-junit-jupiter:4.8.0")
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    runtimeOnly("com.h2database:h2")
 }
 
 dependencyManagement {
@@ -47,8 +48,6 @@ kotlin {
 	}
 }
 
-contracts {
-}
 
 allOpen {
 	annotation 'jakarta.persistence.Entity'
@@ -56,9 +55,6 @@ allOpen {
 	annotation 'jakarta.persistence.Embeddable'
 }
 
-tasks.named('contractTest') {
-	useJUnitPlatform()
-}
 
 tasks.named('test') {
 	useJUnitPlatform()

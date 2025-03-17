@@ -25,3 +25,27 @@ replay_pid*
 
 # Kotlin Gradle plugin data, see https://kotlinlang.org/docs/whatsnew20.html#new-directory-for-kotlin-data-in-gradle-projects
 .kotlin/
+
+# Gradle files
+.gradle/
+build/
+
+# Gradle wrapper files
+!gradle/wrapper/gradle-wrapper.jar
+gradle-wrapper.properties
+
+# IntelliJ project files
+out/
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# MacOS Finder system files
+.DS_Store
+
+# Windows thumbnail cache files
+Thumbs.db
+
+# Linux file system
+*~
